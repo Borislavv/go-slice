@@ -61,6 +61,23 @@ func (s *Slice[T]) Remove(idx int) (ok bool) {
 	return true
 }
 
+func (s *Slice[T]) Iter() chan T {
+	ch := make(chan T)
+	defer close(ch)
+	go func() {
+		for _, v := range *s {
+			ch <- v
+		}
+	}()
+	return ch
+}
+
+func (s *Slice[T]) Map(callable func(k int, v T)) {
+	for k, v := range *s {
+		callable(k, v)
+	}
+}
+
 func (s *Slice[T]) Len() int {
 	return len(*s)
 }
