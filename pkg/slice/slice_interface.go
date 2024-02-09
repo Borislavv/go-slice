@@ -10,6 +10,8 @@ type Interface[T any] interface {
 	Get(idx int) (item T, ok bool)
 	Has(idx int) (ok bool)
 	Remove(idx int) (ok bool)
+	Map(callable func(k int, v T))
+	Iter() chan T
 	Len() int
 	Cap() int
 }
