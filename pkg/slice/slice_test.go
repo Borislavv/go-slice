@@ -1,6 +1,9 @@
 package slice
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestSlice_Append(t *testing.T) {
 	lenMsgPattern := "slice length must be equals %d, actual %d"
@@ -58,5 +61,11 @@ func TestSlice_Append(t *testing.T) {
 	}
 	if sl.Cap() != 8 {
 		t.Fatalf(capMsgPattern, 8, sl.Cap())
+	}
+
+	for i := 0; i < 5; i++ {
+		if (*sl)[i] != fmt.Sprintf("%d", i+1) {
+			t.Fatalf("item of slice with index %d is not mathched expected value %d", i, i+1)
+		}
 	}
 }
