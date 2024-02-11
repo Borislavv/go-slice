@@ -12,7 +12,25 @@ func (s *Slice[T]) Append(items ...T) {
 }
 
 func (s *Slice[T]) Prepend(items ...T) {
-	*s = append(items, *s...)
+	itLen := len(items)
+	slLen := s.Len()
+	slCap := s.Cap()
+	nwLen := slLen + itLen
+
+	if slCap >= nwLen {
+		*s = append(*s, items...)
+		copy((*s)[itLen:], (*s)[:slLen])
+		copy(*s, items)
+	} else {
+		for i := 2; ; i++ {
+			if float64(slCap*i)*0.75 >= float64(nwLen) {
+				nwSl := make([]T, itLen, slCap*i)
+				copy(nwSl, items)
+				*s = append(nwSl, *s...)
+				return
+			}
+		}
+	}
 }
 
 func (s *Slice[T]) Pop() (item T, ok bool) {
