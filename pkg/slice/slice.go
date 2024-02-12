@@ -22,9 +22,14 @@ func (s *Slice[T]) Prepend(items ...T) {
 		copy((*s)[itLen:], (*s)[:slLen])
 		copy(*s, items)
 	} else {
-		for i := 2; ; i++ {
-			if float64(slCap*i)*0.75 >= float64(nwLen) {
-				nwSl := make([]T, itLen, slCap*i)
+		nwCap := slCap
+		for {
+			nwCap = nwCap * 2
+			if nwCap == 0 {
+				nwCap = 1
+			}
+			if nwCap >= nwLen {
+				nwSl := make([]T, itLen, nwCap)
 				copy(nwSl, items)
 				*s = append(nwSl, *s...)
 				return
