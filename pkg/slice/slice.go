@@ -2,8 +2,11 @@ package slice
 
 type Slice[T any] []T
 
-func New[T any](len int, cap int) *Slice[T] {
-	var s Slice[T] = make([]T, len, cap)
+func New[T any](length int, capacity int, items []T) *Slice[T] {
+	var s Slice[T] = make([]T, length, capacity)
+	if items != nil && len(items) > 0 {
+		s = append(s, items...)
+	}
 	return &s
 }
 
