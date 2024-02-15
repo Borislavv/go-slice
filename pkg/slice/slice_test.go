@@ -5,11 +5,43 @@ import (
 	"testing"
 )
 
+func TestSlice_New(t *testing.T) {
+	s := []string{"first", "second", "third", "forth", "fifth"}
+
+	sl := New[string](0, 0, s)
+
+	if sl.Len() != 5 {
+		t.Fatalf("expected length 5 but actual %d", sl.Len())
+	} else if sl.Cap() != 5 {
+		t.Fatalf("expected capacity 8 but actual %d", sl.Cap())
+	}
+
+	for k, v := range s {
+		if (*sl)[k] != v {
+			t.Fatalf("value is not matched by index %d, expected %v, actual %v", k, v, (*sl)[k])
+		}
+	}
+
+	sl = New[string](10, 20, s)
+
+	if sl.Len() != 15 {
+		t.Fatalf("expected length 5 but actual %d", sl.Len())
+	} else if sl.Cap() != 20 {
+		t.Fatalf("expected capacity 8 but actual %d", sl.Cap())
+	}
+
+	for k, v := range s {
+		if (*sl)[k+10] != v {
+			t.Fatalf("value is not matched by index %d, expected %v, actual %v", k, v, (*sl)[k+10])
+		}
+	}
+}
+
 func TestSlice_Append(t *testing.T) {
 	lenMsgPattern := "slice length must be equals %d, actual %d"
 	capMsgPattern := "slice capacity must be equals %d, actual %d"
 
-	sl := New[string](0, 0)
+	sl := New[string](0, 0, nil)
 
 	if sl.Len() != 0 {
 		t.Fatalf(lenMsgPattern, 0, sl.Len())
@@ -77,7 +109,7 @@ func TestSlice_Prepend(t *testing.T) {
 	lenMsgPattern := "slice length must be equals %d, actual %d"
 	capMsgPattern := "slice capacity must be equals %d, actual %d"
 
-	sl := New[string](0, 0)
+	sl := New[string](0, 0, nil)
 
 	if sl.Len() != 0 {
 		t.Fatalf(lenMsgPattern, 0, sl.Len())
