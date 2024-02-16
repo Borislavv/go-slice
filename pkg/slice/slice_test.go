@@ -11,35 +11,35 @@ func TestSlice_New(t *testing.T) {
 	sl := New[string](0, 0, s)
 
 	if sl.Len() != 5 {
-		t.Fatalf("expected length 5 but actual %d", sl.Len())
+		t.Fatalf("expected length '5' but actual '%d'", sl.Len())
 	} else if sl.Cap() != 5 {
-		t.Fatalf("expected capacity 8 but actual %d", sl.Cap())
+		t.Fatalf("expected capacity '8' but actual '%d'", sl.Cap())
 	}
 
 	for k, v := range s {
 		if (*sl)[k] != v {
-			t.Fatalf("value is not matched by index %d, expected %v, actual %v", k, v, (*sl)[k])
+			t.Fatalf("value is not matched by index '%d', expected '%v', actual '%v'", k, v, (*sl)[k])
 		}
 	}
 
 	sl = New[string](10, 20, s)
 
 	if sl.Len() != 15 {
-		t.Fatalf("expected length 5 but actual %d", sl.Len())
+		t.Fatalf("expected length '5' but actual '%d'", sl.Len())
 	} else if sl.Cap() != 20 {
-		t.Fatalf("expected capacity 8 but actual %d", sl.Cap())
+		t.Fatalf("expected capacity '8' but actual '%d'", sl.Cap())
 	}
 
 	for k, v := range s {
 		if (*sl)[k+10] != v {
-			t.Fatalf("value is not matched by index %d, expected %v, actual %v", k, v, (*sl)[k+10])
+			t.Fatalf("value is not matched by index '%d', expected '%v', actual '%v'", k, v, (*sl)[k+10])
 		}
 	}
 }
 
 func TestSlice_Append(t *testing.T) {
-	lenMsgPattern := "slice length must be equals %d, actual %d"
-	capMsgPattern := "slice capacity must be equals %d, actual %d"
+	lenMsgPattern := "slice length must be equals '%d', actual '%d'"
+	capMsgPattern := "slice capacity must be equals '%d', actual '%d'"
 
 	sl := New[string](0, 0, nil)
 
@@ -98,7 +98,7 @@ func TestSlice_Append(t *testing.T) {
 	for i := 0; i < 5; i++ {
 		if (*sl)[i] != fmt.Sprintf("%d", i+1) {
 			t.Fatalf(
-				"item of slice with index %d  (value %v) is not mathched expected value %d",
+				"item of slice with index '%d' (value '%v') is not mathched expected value '%d'",
 				i, (*sl)[i], i+1,
 			)
 		}
@@ -106,8 +106,8 @@ func TestSlice_Append(t *testing.T) {
 }
 
 func TestSlice_Prepend(t *testing.T) {
-	lenMsgPattern := "slice length must be equals %d, actual %d"
-	capMsgPattern := "slice capacity must be equals %d, actual %d"
+	lenMsgPattern := "slice length must be equals '%d', actual '%d'"
+	capMsgPattern := "slice capacity must be equals '%d', actual '%d'"
 
 	sl := New[string](0, 0, nil)
 
@@ -166,9 +166,61 @@ func TestSlice_Prepend(t *testing.T) {
 	for i := 5; i > 0; i-- {
 		if (*sl)[5-i] != fmt.Sprintf("%d", i) {
 			t.Fatalf(
-				"item of slice with index %d (value %v) is not mathched expected value %d",
+				"item of slice with index '%d' (value '%v') is not mathched expected value '%d'",
 				5-i, (*sl)[5-i], i,
 			)
 		}
+	}
+}
+
+func TestSlice_Pop(t *testing.T) {
+	sl := New[string](0, 0, []string{"first", "second", "third", "forth", "fifth"})
+
+	fifth, ok := sl.Pop()
+	if !ok {
+		t.Fatal("failed to pop element of slice")
+	}
+	if fifth != "fifth" {
+		t.Fatalf("poped element mismatched, expected 'fifth', actual '%v'", fifth)
+	}
+	if sl.Len() != 4 {
+		t.Fatalf("length of the target slice was not decreased, actual '%d', expected '%d'", sl.Len(), 4)
+	}
+
+	forth, ok := sl.Pop()
+	if !ok {
+		t.Fatal("failed to pop element of slice")
+	}
+	if forth != "forth" {
+		t.Fatalf("poped element mismatched, expected 'forth', actual '%v'", forth)
+	}
+	if sl.Len() != 3 {
+		t.Fatalf("length of the target slice was not decreased, actual '%d', expected '%d'", sl.Len(), 3)
+	}
+}
+
+func TestSlice_Shift(t *testing.T) {
+	sl := New[string](0, 0, []string{"first", "second", "third", "forth", "fifth"})
+
+	first, ok := sl.Shift()
+	if !ok {
+		t.Fatal("failed to shift element of slice")
+	}
+	if first != "first" {
+		t.Fatalf("shifted element mismatched, expected 'first', actual '%v'", first)
+	}
+	if sl.Len() != 4 {
+		t.Fatalf("length of the target slice was not decreased, actual '%d', expected '%d'", sl.Len(), 4)
+	}
+
+	second, ok := sl.Shift()
+	if !ok {
+		t.Fatal("failed to pop element of slice")
+	}
+	if second != "second" {
+		t.Fatalf("shifted element mismatched, expected 'second', actual '%v'", second)
+	}
+	if sl.Len() != 3 {
+		t.Fatalf("length of the target slice was not decreased, actual '%d', expected '%d'", sl.Len(), 3)
 	}
 }
