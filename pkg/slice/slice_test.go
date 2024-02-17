@@ -297,4 +297,8 @@ func TestSlice_Remove(t *testing.T) {
 	if !ok {
 		t.Fatalf("failed to remove element by index '1'")
 	}
+	if sl.Len() != 4 {
+		t.Fatalf("failed to decrease length of target slice after remove element")
+	}
+
 }
