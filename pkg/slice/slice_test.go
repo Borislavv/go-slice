@@ -271,3 +271,21 @@ func TestSlice_Get(t *testing.T) {
 		t.Fatalf("found unexists element for index '10' with value '%v'", v)
 	}
 }
+
+func TestSlice_Has(t *testing.T) {
+	s := []string{"first", "second", "third", "forth", "fifth"}
+
+	sl := New[string](0, 0, s)
+
+	for k, _ := range s {
+		ok := sl.Has(k)
+		if !ok {
+			t.Fatalf("has: failed to fetch element by index '%d' from slice", k)
+		}
+	}
+
+	ok := sl.Has(10)
+	if ok {
+		t.Fatalf("has: found unexists element for index '10'")
+	}
+}
