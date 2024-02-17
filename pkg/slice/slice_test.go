@@ -244,9 +244,30 @@ func TestSlice_Sub(t *testing.T) {
 		t.Fatal("failed to sub element of slice")
 	}
 	if forth != "forth" {
-		t.Fatalf("cutted element mismatched, expected 'forth', actual '%v'", forth)
+		t.Fatalf("subbed element mismatched, expected 'forth', actual '%v'", forth)
 	}
 	if sl.Len() != 3 {
 		t.Fatalf("length of the target slice was not decreased, actual '%d', expected '%d'", sl.Len(), 3)
+	}
+}
+
+func TestSlice_Get(t *testing.T) {
+	s := []string{"first", "second", "third", "forth", "fifth"}
+
+	sl := New[string](0, 0, s)
+
+	for k, v := range s {
+		val, ok := sl.Get(k)
+		if !ok {
+			t.Fatalf("failed to fetch element by index '%d' from slice", k)
+		}
+		if val != v {
+			t.Fatalf("mismatch fetched value, expected '%v', actual '%v'", v, val)
+		}
+	}
+
+	v, ok := sl.Get(10)
+	if ok {
+		t.Fatalf("found unexists element for index '10' with value '%v'", v)
 	}
 }
