@@ -300,5 +300,34 @@ func TestSlice_Remove(t *testing.T) {
 	if sl.Len() != 4 {
 		t.Fatalf("failed to decrease length of target slice after remove element")
 	}
+	v, ok := sl.Get(1)
+	if !ok {
+		t.Fatalf("failed to check the removed element is really unexists due to failed 'get' opeartion")
+	}
+	if v == "second" {
+		t.Fatalf("failed remove operation due to 'second' element is exists")
+	}
 
+	ok = sl.Remove(2)
+	if !ok {
+		t.Fatalf("failed to remove element by index '2'")
+	}
+	if sl.Len() != 3 {
+		t.Fatalf("failed to decrease length of target slice after remove element")
+	}
+	v, ok = sl.Get(2)
+	if !ok {
+		t.Fatalf("failed to check the removed element is really unexists due to failed 'get' opeartion")
+	}
+	if v == "forth" {
+		t.Fatalf("failed remove operation due to 'forth' element is exists")
+	}
+
+	for k, v := range []string{"first", "third", "fifth"} {
+		val, vok := sl.Get(k)
+		if !vok {
+			t.Fatalf("finally comparation failed after remove operations,"+
+				" element with index '%d' mismatched, expected '%v', actual '%v'", k, v, val)
+		}
+	}
 }
