@@ -224,3 +224,29 @@ func TestSlice_Shift(t *testing.T) {
 		t.Fatalf("length of the target slice was not decreased, actual '%d', expected '%d'", sl.Len(), 3)
 	}
 }
+
+func TestSlice_Sub(t *testing.T) {
+	sl := New[string](0, 0, []string{"first", "second", "third", "forth", "fifth"})
+
+	second, ok := sl.Sub(1)
+	if !ok {
+		t.Fatal("failed to sub element of slice")
+	}
+	if second != "second" {
+		t.Fatalf("cutted element mismatched, expected 'second', actual '%v'", second)
+	}
+	if sl.Len() != 4 {
+		t.Fatalf("length of the target slice was not decreased, actual '%d', expected '%d'", sl.Len(), 4)
+	}
+
+	forth, ok := sl.Sub(2)
+	if !ok {
+		t.Fatal("failed to sub element of slice")
+	}
+	if forth != "forth" {
+		t.Fatalf("cutted element mismatched, expected 'forth', actual '%v'", forth)
+	}
+	if sl.Len() != 3 {
+		t.Fatalf("length of the target slice was not decreased, actual '%d', expected '%d'", sl.Len(), 3)
+	}
+}
