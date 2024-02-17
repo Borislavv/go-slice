@@ -65,7 +65,7 @@ func (s *Slice[T]) Sub(idx int) (item T, ok bool) {
 	}
 	item = (*s)[idx]
 	*s = append((*s)[:idx], (*s)[idx+1:]...)
-	return item, ok
+	return item, true
 }
 
 func (s *Slice[T]) Get(idx int) (item T, ok bool) {
