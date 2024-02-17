@@ -295,6 +295,6 @@ func TestSlice_Remove(t *testing.T) {
 
 	ok := sl.Remove(1)
 	if !ok {
-		
+		t.Fatalf("failed to remove element by index '1'")
 	}
 }
