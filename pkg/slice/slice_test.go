@@ -289,3 +289,12 @@ func TestSlice_Has(t *testing.T) {
 		t.Fatalf("has: found unexists element for index '10'")
 	}
 }
+
+func TestSlice_Remove(t *testing.T) {
+	sl := New[string](0, 0, []string{"first", "second", "third", "forth", "fifth"})
+
+	ok := sl.Remove(1)
+	if !ok {
+		
+	}
+}
